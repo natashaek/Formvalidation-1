@@ -4,9 +4,8 @@ import 'package:formvalidation/src/blocs/provider.dart';
 import 'package:formvalidation/src/providers/usuario_provider.dart';
 import 'package:formvalidation/src/utils/utils.dart';
 
-class LoginPage extends StatelessWidget {
+class RegistroPage extends StatelessWidget {
   final usuarioProvider = new UsuarioProvider();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +46,7 @@ class LoginPage extends StatelessWidget {
                 ]),
             child: Column(
               children: [
-                Text('Ingreso', style: TextStyle(fontSize: 20.0)),
+                Text('Crear cuenta', style: TextStyle(fontSize: 20.0)),
                 SizedBox(height: 60.0),
                 _crearEmail(bloc),
                 SizedBox(height: 30.0),
@@ -58,9 +57,8 @@ class LoginPage extends StatelessWidget {
             ),
           ),
           FlatButton(
-              onPressed: () =>
-                  Navigator.pushReplacementNamed(context, 'registro'),
-              child: Text('Crear una nueva cuenta')),
+              onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
+              child: Text('¿Ya tienes cuenta? Login')),
           SizedBox(height: 100.0)
         ],
       ),
@@ -123,18 +121,17 @@ class LoginPage extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             shape: shape,
             elevation: 0.0,
-            primary: Colors.deepPurple,
+            primary: Color.fromARGB(255, 245, 173, 106),
             onPrimary: Colors.white,
           ),
-          onPressed: snapshot.hasData ? () => _login(bloc, context) : null,
+          onPressed: snapshot.hasData ? () => _register(bloc, context) : null,
         );
       },
     );
   }
 
-  _login(LoginBloc bloc, BuildContext context) async {
-    Map info = await usuarioProvider.login(bloc.email, bloc.password);
-
+  _register(LoginBloc bloc, BuildContext context) async {
+    final info = await usuarioProvider.nuevoUsuario(bloc.email, bloc.email);
     if (info['ok']) {
       Navigator.pushReplacementNamed(context, 'home');
     } else {
